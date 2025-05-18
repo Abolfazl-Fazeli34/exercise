@@ -1,0 +1,17 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    {% block link %}  {% endblock %}
+    <title>My-Test | {% block title %} {% endblock %}</title>
+</head>
+<body>
+{% include "partials/header.html" %}
+{% include "partials/content.html" %}
+{% include "partials/footer.html" %}
+<script src="{% static "scripts/jquery-3.3.1.slim.min.js" %}"></script>
+<script src="{% static "scripts/bootstrap.bundle.min.js" %}"></script>
+</body>
+</html>
