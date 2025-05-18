@@ -8,4 +8,26 @@
         <p>{{ post.author }}</p>
         <p>{{ post.created }}</p>
     </div>
+    <br>
+    <hr>
+    <div>
+        <form method="post" class="form" action="{% url 'blog:' post.id %}">
+            {% csrf_token %}
+            <input type="text" name="name" {% if form.name.value %}value="{{ form.name.value }}"{% endif %}>
+            <textarea name="letter">
+                {% if form.letter.value %}value="{{ form.letter.value }}"{% endif %}
+            </textarea>
+            <input class="form-control" type="submit" value="Submit">
+        </form>
+    </div>
+    {% with comments.count as cm_count %}
+        <p>{{ cm_count }} : comment {{ cm_count | pluralize }}</p>
+    {% endwith %}
+    {% for cm in comments %}
+    	<p>{{ cm.name }}</p>
+    	<p>{{ cm.letter | linebreaks }}</p>
+    {% empty %}
+        کامتنی وجود نداره !
+    {% endfor %}
+    
 {% endblock %}

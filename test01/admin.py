@@ -30,3 +30,13 @@ class TicketAdmin(admin.ModelAdmin):
     list_editable = ['subject']
     list_display_links = ['full_name']
     search_fields = ['full_name', 'subject']
+
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ['name', 'post']
+    list_editable = ['post']
+    raw_id_fields = ['post']
+    list_filter = ['name', ('created', JDateFieldListFilter)]
+    search_fields = ['name']
+    list_display_links = ['name']

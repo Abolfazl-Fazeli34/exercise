@@ -1,9 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.shortcuts import redirect
 from django.http import Http404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-
-from .forms import TicketForm
+from django.views.decorators.http import require_POST, require_GET
+from .forms import TicketForm, CommentForm
 from .models import *
 
 
@@ -30,8 +30,12 @@ def post_detail(request, pk):
         post = Post.published.get(pk=pk)
     except:
         raise Http404("page not found")
+    fprm = CommentForm()
+    comment = post.comments.filter(active=True)
     context = {
         'post': post,
+        'form': fprm,
+        'comments': comment,
     }
     return render(request, 'project/post_details.html', context)
 
@@ -51,3 +55,19 @@ def ticket(request):
     else:
         form = TicketForm()
     return render(request, 'form/ticket.html', context={'form': form})
+
+@require_POST
+def post_comment(request, post_id):
+    post = get_object_or_404(Post, id=post_id, status=Post.Status.PUBLISH)
+    comment = None
+    form = CommentForm(request.POST)
+    if form.is_valid():
+        comment = form.save(commit=False)
+        comment.post = post
+        comment.save()
+    context = {
+        'post': post,
+        'form': form,
+        'comment': comment,
+    }
+    return render(request, 'form/comment.html', context)

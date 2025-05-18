@@ -31,3 +31,8 @@ class TicketForm(forms.Form):
                 msg = "ایمیل شما معتبر نیست !"
                 self.add_error('email', msg)
         return cleaned_data
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['name', 'letter']
