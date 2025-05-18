@@ -20,15 +20,19 @@ class Post(models.Model):
     title = models.CharField(max_length=255, verbose_name='عنوان')
     description = models.TextField(verbose_name='توضیحات')
     slug = models.SlugField(max_length=255, unique=True, verbose_name='اسلاگ')
-    published = models.DateTimeField(default=timezone.now, verbose_name='زمان ایجاد')
+    publish = models.DateTimeField(default=timezone.now, verbose_name='زمان ایجاد')
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
+    objects = models.Manager()
+    published = PublishedManager()
+
     class Meta:
-        ordering = ['-published']
-        indexes = [models.Index(fields=['published'], name='published_index')]
+        ordering = ['-publish']
+        indexes = [models.Index(fields=['-publish'])]
         verbose_name = 'پست'
         verbose_name_plural = 'پست ها'
+
 
     def __str__(self):
         return f'title post : {self.title}'
