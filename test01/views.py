@@ -19,7 +19,6 @@ def post_list(request):
     except PageNotAnInteger:
         page_obj = paginator.page(1)
     context = {
-        'posts': posts,
         'page_obj': page_obj,
     }
     return render(request, 'project/post_list.html', context)

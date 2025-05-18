@@ -2,7 +2,7 @@
 {% load static %}
 {% block title %} post_list {% endblock %}
 {% block content %}
-   {% for post in posts %}
+   {% for post in page_obj %}
    	    <div>
             <a href="{{ post.get_absolute_url }}">
                 <h1>{{ post.title }}</h1>
@@ -11,11 +11,5 @@
             </a>
         </div>
    {% endfor %}
-   {% if page_obj.has_previous %} {# بررسی میکنه ایا صفحه قبلی وجود داره #}
-   	    <a href="?page={{ page_obj.previous_page_number }}">Previous</a> {# شماره صفحه قبلی را بر میگرداند #}
-   {% endif %}
-    <p>{{ page_obj.number }} of {{ page_obj.paginator.num_page }}</p> {# اولی شماره صفحه فعلی را یمده و دومی تعداد تمام صفحه ها رو میده #}
-   {% if page_obj.has_next %} {# بررسی میکنه ایا صفحه بعدی وجود داره #}
-       <a href="?page={{ page_obj.next_page_number }}">Next</a> {# شماره صفحه بعدی را بر میگرداند #}
-   {% endif %}
+   {% include 'partials/paginations.html' with page = page_obj %}
 {% endblock %}

@@ -1,0 +1,7 @@
+{% if page.has_previous %} {# بررسی میکنه ایا صفحه قبلی وجود داره #}
+    <a href="?page={{ page.previous_page_number }}">Previous</a> {# شماره صفحه قبلی را بر میگرداند #}
+{% endif %}
+<p>{{ page.number }} of {{ page.paginator.num_page }}</p> {# اولی شماره صفحه فعلی را یمده و دومی تعداد تمام صفحه ها رو میده #}
+{% if page.has_next %} {# بررسی میکنه ایا صفحه بعدی وجود داره #}
+   <a href="?page={{ page.next_page_number }}">Next</a> {# شماره صفحه بعدی را بر میگرداند #}
+{% endif %}
