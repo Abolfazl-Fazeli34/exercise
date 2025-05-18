@@ -12,4 +12,5 @@
         </div>
    {% endfor %}
    {% include 'partials/paginations.html' with page=page_obj %} {# میتوان در تمپلیت هم متغیر ایجاد کرد و نکته اینجاست که نباید فاصله بین مساوی ها با عملوند ها باشه #}
+   <a href="{% url 'test01:ticket' %}">create ticket</a>
 {% endblock %}

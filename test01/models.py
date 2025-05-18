@@ -40,3 +40,21 @@ class Post(models.Model):
 
     def __str__(self):
         return f'title post : {self.title}'
+
+class Ticket(models.Model):
+    full_name = models.CharField(max_length=255, verbose_name='نام و نام خانوادگی')
+    subject = models.CharField(max_length=255, verbose_name='نوع تیکت')
+    message = models.TextField(verbose_name='پیغام')
+    email = models.EmailField(verbose_name='ایمیل')
+    phone = models.CharField(max_length=11, verbose_name='شماره همراه')
+
+    class Meta:
+        ordering = ['-subject']
+        indexes = [models.Index(fields=['-subject'])]
+        verbose_name = 'تیکت'
+        verbose_name_plural = 'تیکت ها'
+
+    def __str__(self):
+        return f'full name : {self.full_name}'
+
+

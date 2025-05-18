@@ -22,3 +22,11 @@ class PostAdmin(admin.ModelAdmin):
     search_fields = ['title', 'description']
     date_hierarchy = 'publish'
     list_display_links = ['title', 'author']
+
+
+@admin.register(Ticket)
+class TicketAdmin(admin.ModelAdmin):
+    list_display = ['full_name', 'subject', 'email']
+    list_editable = ['subject']
+    list_display_links = ['full_name']
+    search_fields = ['full_name', 'subject']
