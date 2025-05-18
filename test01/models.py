@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
+from django_jalali.db import models as jmodels
 
 
 # Create your models here.
@@ -20,9 +21,9 @@ class Post(models.Model):
     title = models.CharField(max_length=255, verbose_name='عنوان')
     description = models.TextField(verbose_name='توضیحات')
     slug = models.SlugField(max_length=255, unique=True, verbose_name='اسلاگ')
-    publish = models.DateTimeField(default=timezone.now, verbose_name='زمان ایجاد')
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
+    publish = jmodels.jDateTimeField(default=timezone.now, verbose_name='زمان ایجاد')
+    created = jmodels.jDateTimeField(auto_now_add=True)
+    updated = jmodels.jDateTimeField(auto_now=True)
 
     objects = models.Manager()
     published = PublishedManager()
