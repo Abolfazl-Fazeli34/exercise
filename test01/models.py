@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.urls import reverse
 from django.utils import timezone
 from django_jalali.db import models as jmodels
 
@@ -34,6 +35,8 @@ class Post(models.Model):
         verbose_name = 'پست'
         verbose_name_plural = 'پست ها'
 
+    def get_absolute_url(self):
+        return reverse('test01:post_detail', kwargs={'pk': self.id})
 
     def __str__(self):
         return f'title post : {self.title}'

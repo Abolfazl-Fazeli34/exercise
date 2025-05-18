@@ -4,11 +4,9 @@
 {% block content %}
    {% for post in posts %}
    	    <div>
-            <a href="{% url 'test01:post_detail' post.id %}">
+            <a href="{{ post.get_absolute_url }}">
                 <h1>{{ post.title }}</h1>
                 <p>{{ post.description | linebreaks | truncatewords:6 }}</p>
-                <p>{{ post.author }}</p>
-                <p>{{ post.created }}</p>
             </a>
         </div>
    {% endfor %}
