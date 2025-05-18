@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import *
+from django_jalali.admin.filters import JDateFieldListFilter
 # Register your models here.
 
 
@@ -15,7 +16,7 @@ class PostAdmin(admin.ModelAdmin):
     ordering = ['-publish']
     raw_id_fields = ['author']
     readonly_fields = ['publish']
-    list_filter = ['publish', 'status']
+    list_filter = [('publish', JDateFieldListFilter), 'status']
     prepopulated_fields = {'slug': ('title',)}
     list_editable = ['status']
     search_fields = ['title', 'description']
