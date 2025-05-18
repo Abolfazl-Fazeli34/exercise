@@ -26,6 +26,8 @@ class Post(models.Model):
     created = jmodels.jDateTimeField(auto_now_add=True)
     updated = jmodels.jDateTimeField(auto_now=True)
 
+    reading_time = models.PositiveIntegerField(default=0, verbose_name='زمان مطالعه')
+
     objects = models.Manager()
     published = PublishedManager()
 

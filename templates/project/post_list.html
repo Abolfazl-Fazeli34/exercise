@@ -1,4 +1,5 @@
 {% extends 'parent/base.html' %}
+{% load blog_tags %}
 {% load static %}
 {% block title %} post_list {% endblock %}
 {% block content %}
@@ -13,4 +14,11 @@
    {% endfor %}
    {% include 'partials/paginations.html' with page=page_obj %} {# میتوان در تمپلیت هم متغیر ایجاد کرد و نکته اینجاست که نباید فاصله بین مساوی ها با عملوند ها باشه #}
    <a href="{% url 'test01:ticket' %}">create ticket</a>
+   {% most_popular_posts 2 as pop_post %}
+   {% for post in pop_post %}
+   	    <a href="{{ post.get_absolute_url }}">
+            {{ post.title }} with : {{ post.comment_count }} comment{{ post.comment_count | pluralize }}
+        </a>
+   {% endfor %}
+
 {% endblock %}

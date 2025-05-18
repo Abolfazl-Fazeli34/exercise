@@ -26,16 +26,11 @@ def post_list(request):
     return render(request, 'project/post_list.html', context)
 
 def post_detail(request, pk):
-    try:
-        post = Post.published.get(pk=pk)
-    except:
-        raise Http404("page not found")
-    fprm = CommentForm()
+    post = get_object_or_404(Post, id=pk, status=Post.Status.PUBLISH)
     comment = post.comments.filter(active=True)
     context = {
         'post': post,
-        'form': fprm,
-        'comments': comment,
+        'comment': comment,
     }
     return render(request, 'project/post_details.html', context)
 

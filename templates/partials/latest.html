@@ -1,0 +1,7 @@
+{% load blog_tags %}
+<div>
+    {% for post in latest_post %}
+        <p>{{ post.title }}</p>
+    {% endfor %}
+    {% latest_post 7 %}
+</div>
