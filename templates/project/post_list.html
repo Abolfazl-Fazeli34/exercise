@@ -3,6 +3,19 @@
 {% load static %}
 {% block title %} post_list {% endblock %}
 {% block content %}
+   <h1>{% total_post %}</h1>
+    <br>
+    <br>
+    {% most_popular_posts 1 as m_p_post %}
+    {% for post in m_p_post %}
+    	<p>{{ post.title }}</p>
+        <p>{{ post.description | linebreaks | truncatewords:2 }}</p>
+    {% endfor %}
+
+    <br>
+    <hr>
+    <br>
+
    {% for post in page_obj %}
    	    <div>
             <a href="{{ post.get_absolute_url }}">
@@ -12,7 +25,9 @@
             </a>
         </div>
    {% endfor %}
+   <br>
    {% include 'partials/paginations.html' with page=page_obj %} {# میتوان در تمپلیت هم متغیر ایجاد کرد و نکته اینجاست که نباید فاصله بین مساوی ها با عملوند ها باشه #}
+   <br>
    <a href="{% url 'test01:ticket' %}">create ticket</a>
    {% most_popular_posts 2 as pop_post %}
    {% for post in pop_post %}
@@ -20,5 +35,10 @@
             {{ post.title }} with : {{ post.comment_count }} comment{{ post.comment_count | pluralize }}
         </a>
    {% endfor %}
-
+    <br>
+    <br>
+    <br>
+    <hr>
+    <br>
+    <a href="{% url 'test01:create_post' %}">create post</a>
 {% endblock %}

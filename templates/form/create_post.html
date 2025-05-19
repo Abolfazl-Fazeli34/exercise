@@ -1,0 +1,24 @@
+{% extends 'parent/base.html' %}
+{% load static %}
+{% block title %} create_post {% endblock %}
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        <input type="text" name="title" placeholder="عنوان را وارد کنید ..">
+        <textarea name="description" cols="30" rows="10"></textarea>
+        <input type="number" name="reading_time">
+        <input type="submit" value="Submit">
+    </form>
+    <hr>
+    {% if form.non_field_errors %}{{ form.non_field_errors }}{% endif %}
+    <br>
+    {% if form.errors %}
+    	{% for field in form %}
+    		{% if field.errors %}
+    			{% for error in field.errors %}
+    				<p>{{ field.label }} : {{ error }}</p>
+    			{% endfor %}
+    		{% endif %}
+    	{% endfor %}
+    {% endif %}
+{% endblock %}

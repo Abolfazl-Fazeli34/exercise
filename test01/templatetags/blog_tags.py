@@ -2,6 +2,8 @@ from itertools import count
 
 from django import template
 from django.db.models import Count
+from django.utils.safestring import mark_safe
+from markdown import markdown
 
 from ..models import *
 
@@ -28,3 +30,7 @@ def latest_post(count=5):
 @register.simple_tag()
 def most_popular_posts(count=5):
     return Post.published.annotate(comment_count=Count('comments')).order_by('-comment_count')[:count]
+
+@register.filter(name='markdown')
+def to_markdown(text):
+    return mark_safe(markdown(text))

@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
 from django.utils import timezone
+from django.utils.text import slugify
 from django_jalali.db import models as jmodels
 
 
@@ -21,15 +22,22 @@ class Post(models.Model):
     status = models.CharField(max_length=10, choices=Status.choices, default=Status.DRAFT)
     title = models.CharField(max_length=255, verbose_name='عنوان')
     description = models.TextField(verbose_name='توضیحات')
-    slug = models.SlugField(max_length=255, unique=True, verbose_name='اسلاگ')
+    slug = models.SlugField(max_length=255, verbose_name='اسلاگ', blank=False, null=False)
     publish = jmodels.jDateTimeField(default=timezone.now, verbose_name='زمان ایجاد')
     created = jmodels.jDateTimeField(auto_now_add=True)
     updated = jmodels.jDateTimeField(auto_now=True)
-
-    reading_time = models.PositiveIntegerField(default=0, verbose_name='زمان مطالعه')
+    reading_time = models.PositiveIntegerField(verbose_name='زمان مطالعه')
 
     objects = models.Manager()
     published = PublishedManager()
+
+    def pop_slug(self):
+        if not self.slug:
+            self.slug = slugify(self.title)
+
+    def save(self, *args, **kwargs):
+        self.pop_slug()
+        super().save(*args, **kwargs)
 
     class Meta:
         ordering = ['-publish']

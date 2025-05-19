@@ -3,7 +3,7 @@ from django.shortcuts import redirect
 from django.http import Http404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.decorators.http import require_POST, require_GET
-from .forms import TicketForm, CommentForm
+from .forms import TicketForm, CommentForm, CreatePostForm
 from .models import *
 
 
@@ -66,3 +66,23 @@ def post_comment(request, post_id):
         'comment': comment,
     }
     return render(request, 'form/comment.html', context)
+
+# @require_POST
+def create_post(request):
+    if request.method == "POST":
+        form = CreatePostForm(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            Post.objects.create(
+                author=request.user,
+                title=cd['title'],
+                description=cd['description'],
+                reading_time=cd['reading_time'],
+            )
+            return redirect('test01:post_list')
+    else:
+        form = CreatePostForm()
+    context = {
+        'form': form,
+    }
+    return render(request, 'form/create_post.html', context)
