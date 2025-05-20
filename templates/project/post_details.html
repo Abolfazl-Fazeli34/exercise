@@ -7,12 +7,19 @@
     <!-- پست اصلی -->
     <div class="card shadow-sm mb-4">
         <div class="card-body">
+            {% if post.post_images.exists %}
+            {% if post.post_images.count > 0 %}
+            	<img src="{{ post.post_images.first.img_file.url }}" class="img-fluid" alt="Responsive image">
+            	<img src="{{ post.post_images.last.img_file.url }}" class="img-fluid" alt="Responsive image">
+            {% endif %}
+            {% endif %}
             <h2 class="card-title">{{ post.title }}</h2>
             <p class="card-text text-muted">{{ post.description }}</p>
             <div class="d-flex justify-content-between mt-3">
                 <span class="text-primary">نویسنده: {{ post.author }}</span>
                 <span class="text-secondary">تاریخ انتشار: {{ post.created }}</span>
             </div>
+
         </div>
     </div>
 

@@ -10,6 +10,16 @@ admin.sites.AdminSite.index_title = 'پنل مدریت'
 # admin.sites.AdminSite.site_url = '<UNK>'
 
 
+class ImageInline(admin.TabularInline):
+    model = Image
+    extra = 0
+    # readonly_fields = ['image']
+
+class CommentInline(admin.TabularInline):
+    model = Comment
+    extra = 0
+    # readonly_fields = ['comment']
+
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
     list_display = ['title', 'author', 'publish', 'status']
@@ -22,6 +32,7 @@ class PostAdmin(admin.ModelAdmin):
     search_fields = ['title', 'description']
     date_hierarchy = 'publish'
     list_display_links = ['title', 'author']
+    inlines = [ImageInline, CommentInline]
 
 
 @admin.register(Ticket)
@@ -40,3 +51,5 @@ class CommentAdmin(admin.ModelAdmin):
     list_filter = ['name', ('created', JDateFieldListFilter)]
     search_fields = ['name']
     list_display_links = ['name']
+
+

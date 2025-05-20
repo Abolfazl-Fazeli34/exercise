@@ -19,10 +19,13 @@
    {% for post in page_obj %}
    	    <div>
             <a href="{{ post.get_absolute_url }}">
+                <img src="{{ post.post_images.first.img_file.url }}" alt="{{ post.post_images.first.tite }}">
                 <h1>{{ post.title }}</h1>
                 <p>{{ post.description | linebreaks | truncatewords:6 }}</p>
 {#                <p>{{ forloop.counter0 }}</p>#}
             </a>
+            <h4>عکس پست : </h4>
+{#            <img src="{{ post.post_images.img_file.url }}" alt="{{ post.post_images.title }}">#}
         </div>
    {% endfor %}
    <br>

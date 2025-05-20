@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'test01.apps.Test01Config',
+    'django_resized'
 ]
 
 MIDDLEWARE = [
@@ -120,10 +121,21 @@ STATIC_URL = '/static/'
 # STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 # STATIC_ROOT = os.path.join(BASE_DIR, 'assest')
 
-# MEDIA_URL = '/media/'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # MEDIA_ROOT = os.path.join(BASE_DIR, 'assest')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+DJANGORESIZED_DEFULT_SIZE =[1920, 1080]
+DJANGORESIZED_DEFULT_SCALE = 0.5
+DJANGORESIZED_DEFULT_QUALITY = 90
+# DJANGORESIZED_DEFULT_HORIZONTAL = 180
+# DJANGORESIZED_DEFULT_VERTICAL = 270
+DJANGORESIZED_DEFULT_KEEP_META = True
+# DJANGORESIZED_DEFULT_FORCE_FORMAT = 'JPEG'
+# DJANGORESIZED_DEFULT_FORMAT_EXTENSIONS = {'JPEG': '.jpg'}
+DJANGORESIZED_DEFULT_NORMALIZE_ROTATION = False

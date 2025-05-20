@@ -1,9 +1,11 @@
+from datetime import date
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.text import slugify
 from django_jalali.db import models as jmodels
+from django_resized import ResizedImageField
 
 
 # Create your models here.
@@ -83,3 +85,27 @@ class Comment(models.Model):
 
     def __str__(self):
         return f'name: {self.name} letter: {self.letter}'
+
+def date_directory_path(instance, filename):
+    today = date.today().strftime('%B %d %Y')
+    return 'exercise/{}/{}'.format(today, filename)
+
+def user_directory_path(instance, filename):
+    user = instance.post.author.username
+    return 'exercise/{}/{}'.format(user, filename)
+
+class Image(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='post_images')
+    # img_file = ResizedImageField(upload_to='images',size=[120,120], scale=1, crop=['center', 'middle'], verbose_name='عکس')
+    # img_file = ResizedImageField(upload_to=date_directory_path,size=[120,120], scale=1, crop=['center', 'middle'], verbose_name='عکس')
+    img_file = ResizedImageField(upload_to=user_directory_path, verbose_name='عکس')
+    title = models.CharField(max_length=100, blank=True, null=True, verbose_name='عنوان')
+    description = models.TextField(verbose_name='توضیحات عکس')
+    created = models.DateTimeField(auto_now_add=True)
+    class Meta:
+        ordering = ['-created']
+        indexes = [models.Index(fields=['-created'])]
+        verbose_name = 'عکس'
+        verbose_name_plural = 'عکس ها'
+    def __str__(self):
+        return '{}'.format(self.title) if self.title else '{}'.format(self.img_file)

@@ -57,3 +57,7 @@ def text_censor(text) -> str:
         if c in text:
             text.replace(c,'...')
     return text
+
+# @register.simple_tag()
+# def count_post_img(id_post):
+#     return Post.published.filter(id=id_post)

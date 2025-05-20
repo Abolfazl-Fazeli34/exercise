@@ -30,9 +30,11 @@ def post_list(request):
 def post_detail(request, pk):
     post = get_object_or_404(Post, id=pk, status=Post.Status.PUBLISH)
     comment = post.comments.filter(active=True)
+    count_img = post.post_images.count()
     context = {
         'post': post,
         'comment': comment,
+        'count_img': count_img,
     }
     return render(request, 'project/post_details.html', context)
 
@@ -107,3 +109,14 @@ def post_search(request):
         'result': result,
     }
     return render(request, 'form/post_search.html', context)
+
+# def profile(request):
+#     user = request.user
+#     pup_post = Post.published.filter(author=user)
+#     drf_post = Post.objects.filter(author=user)
+#     context = {
+#         'pup_post': pup_post,
+#         'drf_post': drf_post,
+#         'user': user,
+#     }
+#     return render(request, 'project/profile.html', context)
