@@ -43,7 +43,7 @@ class CommentForm(forms.ModelForm):
         if name.isdigit():
             msg = "به نظرم اگه از عدد استفاده نکنی بهتره"
             self.add_error('name', msg)
-        if letter.count() < 5:
+        if len(letter) < 5:
             msg = "حالا هداری کامنت میزاری یکم مطالب بیشتر بزار"
             self.add_error('letter', msg)
         return cleaned_data
@@ -62,9 +62,13 @@ class CreatePostForm(forms.Form):
             self.add_error('reading_time', msg)
         if reading_time < 0:
             msg = "چرا زمان مطالعه رو منفی میزنی !"
+            self.add_error('reading_time', msg)
         if len(title) < 2:
             msg = "تعداد کاراکتر عنوان کم است !"
             self.add_error('title', msg)
         if len(title) > 40:
             msg = "تعداد کاراکتر عنوان زیاد است !"
         return cleaned_data
+
+class PostSearchForm(forms.Form):
+    query = forms.CharField(label='جستجو', max_length=255)

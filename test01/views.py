@@ -1,9 +1,11 @@
+from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
+from django.db.models.expressions import result
 from django.shortcuts import render, get_object_or_404
 from django.shortcuts import redirect
 from django.http import Http404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.decorators.http import require_POST, require_GET
-from .forms import TicketForm, CommentForm, CreatePostForm
+from .forms import TicketForm, CommentForm, CreatePostForm, PostSearchForm
 from .models import *
 
 
@@ -86,3 +88,22 @@ def create_post(request):
         'form': form,
     }
     return render(request, 'form/create_post.html', context)
+
+def post_search(request):
+    query = None
+    result = []
+    if 'query' in request.GET:
+        form = PostSearchForm(request.GET)
+        if form.is_valid():
+            query = form.cleaned_data['query']
+            # result1 = Post.published.filter(description__icontains=query)
+            # result2 = Post.published.filter(title__icontains=query)
+            search_query = SearchQuery(query)
+            search_vector = SearchVector('title', weight='A') + SearchVector('description', weight='B')
+            result = Post.published.annotate(search=search_vector, rank=SearchRank(search_vector, search_query)).filter(rank__gte=.5).order_by('-rank')
+            # result = result1 ^ result2
+    context = {
+        'query': query,
+        'result': result,
+    }
+    return render(request, 'form/post_search.html', context)

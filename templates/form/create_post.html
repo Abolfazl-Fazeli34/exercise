@@ -4,9 +4,9 @@
 {% block content %}
     <form method="post">
         {% csrf_token %}
-        <input type="text" name="title" placeholder="عنوان را وارد کنید ..">
-        <textarea name="description" cols="30" rows="10"></textarea>
-        <input type="number" name="reading_time">
+        <input type="text" name="title" placeholder="عنوان را وارد کنید .." {% if form.title.value %}value="{{ form.title.value }}"{% endif %}>
+        <textarea name="description" cols="30" rows="10">{% if form.description.value %}value="{{ form.description.value }}"{% endif %}</textarea>
+        <input type="number" name="reading_time" {% if form.reading_time.value %}value="{{ form.reading_time.value }}"{% endif %}>
         <input type="submit" value="Submit">
     </form>
     <hr>
