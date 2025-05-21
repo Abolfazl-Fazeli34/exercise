@@ -1,0 +1,132 @@
+<footer class="site-footer">
+  <div class="footer-container">
+    <div class="footer-about">
+      <h3>درباره ما</h3>
+      <p>ما یک وبسایت تخصصی برای به اشتراک‌گذاری مطالب آموزشی و خبری هستیم. هدف ما ارائه بهترین محتوا با طراحی مدرن و کاربرپسند است.</p>
+    </div>
+
+    <div class="footer-links">
+      <h3>لینک‌های سریع</h3>
+      <ul>
+        <li><a href="{% url 'test01:post_list' %}">صفحه اصلی</a></li>
+        <li><a href="{% url 'test01:create_post' %}">بلاگ</a></li>
+        <li><a href="#">درباره ما</a></li>
+        <li><a href="{% url 'test01:ticket' %}">تماس با ما</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-social">
+      <h3>ما را دنبال کنید</h3>
+      <div class="social-icons">
+        <a href="https://twitter.com/yourprofile" target="_blank" rel="noopener" aria-label="Twitter">
+          <i class="bi bi-twitter"></i>
+        </a>
+        <a href="https://instagram.com/yourprofile" target="_blank" rel="noopener" aria-label="Instagram">
+          <i class="bi bi-instagram"></i>
+        </a>
+        <a href="https://linkedin.com/in/yourprofile" target="_blank" rel="noopener" aria-label="LinkedIn">
+          <i class="bi bi-linkedin"></i>
+        </a>
+        <a href="https://facebook.com/yourprofile" target="_blank" rel="noopener" aria-label="Facebook">
+          <i class="bi bi-facebook"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>© ۲۰۲۵ همه حقوق محفوظ است | طراحی توسط شما</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: #0d6efd;
+    color: #fff;
+    padding: 3rem 1rem 1rem;
+    font-family: var(--font-family);
+    box-shadow: 0 -4px 10px rgba(13, 110, 253, 0.5);
+  }
+
+  .footer-container {
+    max-width: 960px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 2rem;
+  }
+
+  .footer-about, .footer-links, .footer-social {
+    flex: 1 1 280px;
+  }
+
+  .footer-about h3,
+  .footer-links h3,
+  .footer-social h3 {
+    font-weight: 900;
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+    border-bottom: 2px solid #fff;
+    padding-bottom: 0.4rem;
+  }
+
+  .footer-about p {
+    line-height: 1.6;
+    color: #dce7ff;
+  }
+
+  .footer-links ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .footer-links ul li {
+    margin-bottom: 0.7rem;
+  }
+
+  .footer-links ul li a {
+    color: #dce7ff;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+  }
+
+  .footer-links ul li a:hover {
+    color: #ffc107;
+  }
+
+  .footer-social .social-icons {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .footer-social a {
+    font-size: 1.8rem;
+    color: #dce7ff;
+    transition: color 0.3s ease;
+  }
+
+  .footer-social a:hover {
+    color: #ffc107;
+  }
+
+  .footer-bottom {
+    text-align: center;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+    color: #cbd5ff;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    padding-top: 1rem;
+  }
+
+  @media (max-width: 768px) {
+    .footer-container {
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .footer-about, .footer-links, .footer-social {
+      flex: 1 1 100%;
+    }
+  }
+</style>

@@ -1,6 +1,106 @@
-<div>
-    <form method="get" action="{% url 'test01:post_search' %}">
-        <input type="text" name="query" id="search" placeholder="Search">
-        <input type="submit" value="Search">
-    </form>
-</div>
+<header class="header-container">
+  <div class="logo">
+    <a href="{% url 'test01:post_list' %}">
+      <img src="#" alt="Logo" />
+      <span>سایت من</span>
+      <p><a href="{% url 'test01:profile' %}">profile</a></p>
+    </a>
+  </div>
+  <form method="get" action="{% url 'test01:post_search' %}" class="search-form" role="search" aria-label="جستجو در سایت">
+    <input type="search" name="query" id="search" placeholder="جستجو..." autocomplete="off" />
+    <button type="submit" aria-label="ارسال جستجو">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001l3.85 3.85a1 1 0 0 0 1.415-1.415l-3.85-3.85zm-5.242 1.658a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"/>
+      </svg>
+    </button>
+  </form>
+</header>
+
+<style>
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.6rem 1rem;
+  background: linear-gradient(90deg, #0d6efd, #0056d2);
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(13,110,253,0.4);
+  font-family: 'Vazirmatn', Tahoma, sans-serif;
+}
+
+.logo a {
+  display: flex;
+  align-items: center;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1.25rem;
+  gap: 0.5rem;
+}
+
+.logo img {
+  height: 32px;
+  width: 32px;
+  filter: drop-shadow(0 0 2px rgba(255 255 255 / 0.8));
+}
+
+.search-form {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-radius: 30px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  max-width: 320px;
+  width: 100%;
+}
+
+.search-form input[type="search"] {
+  border: none;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  flex-grow: 1;
+  outline-offset: 2px;
+  outline-color: #0d6efd;
+}
+
+.search-form input[type="search"]::placeholder {
+  color: #999;
+  font-weight: 500;
+}
+
+.search-form input[type="search"]:focus {
+  outline: none;
+}
+
+.search-form button {
+  background: #0d6efd;
+  border: none;
+  padding: 0.5rem 0.9rem;
+  cursor: pointer;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s ease;
+}
+
+.search-form button:hover {
+  background: #004bb5;
+}
+
+.search-form button svg {
+  fill: white;
+}
+
+@media (max-width: 576px) {
+  .header-container {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .search-form {
+    max-width: 100%;
+  }
+}
+</style>

@@ -1,14 +1,73 @@
 {% extends 'parent/base.html' %}
 {% load blog_tags %}
 {% load static %}
-{% block title %}post_search{% endblock %}
+
+{% block title %}نتایج جستجو{% endblock %}
+
 {% block content %}
-    <div>
-    {% for post in result %}
-        <a href="{{ post.get_absolute_url }}">
-            {{ post.title }}
-        </a>
-        <p>{{ post.description }}</p>
-    {% endfor %}
-    </div>
+  <section class="search-results">
+    <h2>نتایج جستجو برای "{{ request.GET.q }}"</h2>
+
+    {% if result %}
+      <ul class="posts-list">
+        {% for post in result %}
+          <li class="post-item">
+            <a href="{{ post.get_absolute_url }}" class="post-title">
+              {{ post.title }}
+            </a>
+            <p class="post-description">{{ post.description|truncatewords:30 }}</p>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="no-results">متأسفانه نتیجه‌ای یافت نشد.</p>
+    {% endif %}
+  </section>
+
+  <style>
+    .search-results {
+      max-width: 720px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+      font-family: 'Vazir', Tahoma, sans-serif;
+      color: #333;
+    }
+    .search-results h2 {
+      font-weight: 900;
+      margin-bottom: 1.5rem;
+      color: #0d6efd;
+    }
+    .posts-list {
+      list-style: none;
+      padding: 0;
+    }
+    .post-item {
+      margin-bottom: 1.8rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    .post-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      text-decoration: none;
+      color: #0d6efd;
+      transition: color 0.3s ease;
+    }
+    .post-title:hover {
+      color: #0056b3;
+      text-decoration: underline;
+    }
+    .post-description {
+      margin-top: 0.5rem;
+      font-size: 1rem;
+      color: #555;
+      line-height: 1.5;
+    }
+    .no-results {
+      text-align: center;
+      font-style: italic;
+      color: #999;
+      margin-top: 2rem;
+    }
+  </style>
 {% endblock %}

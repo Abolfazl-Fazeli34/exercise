@@ -1,24 +1,74 @@
 {% extends 'parent/base.html' %}
 {% load static %}
-{% block title %} create_post {% endblock %}
+{% block title %}ایجاد پست جدید{% endblock %}
+
 {% block content %}
-    <form method="post">
-        {% csrf_token %}
-        <input type="text" name="title" placeholder="عنوان را وارد کنید .." {% if form.title.value %}value="{{ form.title.value }}"{% endif %}>
-        <textarea name="description" cols="30" rows="10">{% if form.description.value %}value="{{ form.description.value }}"{% endif %}</textarea>
-        <input type="number" name="reading_time" {% if form.reading_time.value %}value="{{ form.reading_time.value }}"{% endif %}>
-        <input type="submit" value="Submit">
-    </form>
-    <hr>
-    {% if form.non_field_errors %}{{ form.non_field_errors }}{% endif %}
-    <br>
-    {% if form.errors %}
-    	{% for field in form %}
-    		{% if field.errors %}
-    			{% for error in field.errors %}
-    				<p>{{ field.label }} : {{ error }}</p>
-    			{% endfor %}
-    		{% endif %}
-    	{% endfor %}
-    {% endif %}
+<style>
+  form {
+    max-width: 600px;
+    margin: 2rem auto;
+    background: #fff;
+    padding: 2rem 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    font-family: 'Vazirmatn', Tahoma, sans-serif;
+    color: #333;
+  }
+
+  input[type="submit"] {
+    background: linear-gradient(135deg, #007bff, #0056d2);
+    border: none;
+    padding: 0.7rem 1.6rem;
+    font-size: 1rem;
+    border-radius: 10px;
+    color: #fff;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    margin-top: 1rem;
+    display: block;
+    width: 100%;
+  }
+  input[type="submit"]:hover {
+    background: linear-gradient(135deg, #0056d2, #003bbd);
+  }
+
+  .errorlist {
+    color: #e74c3c;
+    margin: 0.3rem 0 1rem 0;
+    padding-left: 1rem;
+    list-style-type: square;
+  }
+
+  .field-errors p {
+    color: #e74c3c;
+    font-size: 0.9rem;
+    margin: 0.2rem 0;
+  }
+</style>
+
+<form method="post" enctype="multipart/form-data" novalidate>
+  {% csrf_token %}
+  {{ form.as_p }}
+
+  <input type="submit" value="ارسال پست">
+</form>
+
+<hr>
+
+{% if form.non_field_errors %}
+  <ul class="errorlist">
+    {% for error in form.non_field_errors %}
+      <li>{{ error }}</li>
+    {% endfor %}
+  </ul>
+{% endif %}
+
+<div class="field-errors">
+  {% for field in form %}
+    {% for error in field.errors %}
+      <p>{{ field.label }}: {{ error }}</p>
+    {% endfor %}
+  {% endfor %}
+</div>
 {% endblock %}

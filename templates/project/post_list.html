@@ -1,47 +1,287 @@
+
+django
+Copy
+Edit
 {% extends 'parent/base.html' %}
 {% load blog_tags %}
 {% load static %}
-{% block title %} post_list {% endblock %}
+
+{% block title %}لیست پست‌ها{% endblock %}
+
 {% block content %}
-   <h1>{% total_post %}</h1>
-    <br>
-    <br>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn&display=swap');
+
+.container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 2rem 1.5rem;
+    font-family: 'Vazirmatn', sans-serif;
+    color: #2c3e50;
+    background: #f5f8fa;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+}
+
+/* Section Titles */
+.section-title {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #34495e;
+    margin-bottom: 1.5rem;
+    position: relative;
+    padding-bottom: 0.7rem;
+    letter-spacing: 1px;
+    border-bottom: 3px solid;
+    border-image-slice: 1;
+    border-width: 3px;
+    border-image-source: linear-gradient(90deg, #3498db, #9b59b6);
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+.section-title::before {
+    content: "📝";
+    font-size: 1.8rem;
+}
+
+/* Popular box */
+.popular-box {
+    background-color: #fff;
+    padding: 1.3rem 1.5rem;
+    border-left: 6px solid #f39c12;
+    border-radius: 12px;
+    margin-bottom: 2.5rem;
+    box-shadow: 0 6px 20px rgba(243, 156, 18, 0.15);
+    transition: box-shadow 0.3s ease;
+}
+.popular-box:hover {
+    box-shadow: 0 12px 40px rgba(243, 156, 18, 0.35);
+}
+.popular-box strong {
+    font-weight: 900;
+    font-size: 1.2rem;
+    color: #d35400;
+    margin-right: 0.5rem;
+}
+.popular-box a {
+    color: #2980b9;
+    font-weight: 700;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+.popular-box a:hover {
+    color: #8e44ad;
+}
+.popular-box p {
+    color: #7f8c8d;
+    margin-top: 0.4rem;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+/* Card grid */
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.8rem;
+}
+
+/* Card style */
+.card {
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.07);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.35s;
+    cursor: pointer;
+}
+.card:hover {
+    transform: translateY(-12px) scale(1.03);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+}
+.card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    filter: brightness(0.95);
+    transition: filter 0.35s ease;
+}
+.card:hover img {
+    filter: brightness(1);
+}
+.card-body {
+    padding: 1.3rem 1.5rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.card-body h5 {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #2c3e50;
+    margin-bottom: 0.7rem;
+    line-height: 1.2;
+    transition: color 0.3s ease;
+}
+.card-body h5:hover {
+    color: #9b59b6;
+}
+.card-body p {
+    font-size: 1rem;
+    color: #7f8c8d;
+    margin-bottom: 1.2rem;
+    line-height: 1.4;
+    flex-grow: 1;
+}
+.card-body a {
+    font-size: 0.95rem;
+    color: #3498db;
+    font-weight: 600;
+    text-decoration: none;
+    border: 2px solid #3498db;
+    padding: 0.45rem 1rem;
+    border-radius: 12px;
+    align-self: flex-start;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 6px rgba(52, 152, 219, 0.2);
+}
+.card-body a:hover {
+    background: #3498db;
+    color: #fff;
+    box-shadow: 0 8px 20px rgba(52, 152, 219, 0.4);
+}
+
+/* Pagination wrapper */
+.mt-4 {
+    margin-top: 2.5rem !important;
+}
+
+/* Links */
+.links {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 3rem;
+}
+.links a {
+    background: linear-gradient(135deg, #8e44ad, #3498db);
+    color: #fff;
+    padding: 0.7rem 1.7rem;
+    border-radius: 30px;
+    text-decoration: none;
+    font-size: 1.05rem;
+    font-weight: 700;
+    box-shadow: 0 6px 18px rgba(142, 68, 173, 0.6);
+    transition: all 0.4s ease;
+}
+.links a:hover {
+    background: linear-gradient(135deg, #3498db, #8e44ad);
+    box-shadow: 0 12px 30px rgba(52, 152, 219, 0.8);
+    transform: translateY(-4px);
+}
+
+/* Popular posts list */
+.mt-4 ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+.mt-4 ul li {
+    margin-bottom: 0.9rem;
+    font-size: 1rem;
+    color: #34495e;
+    transition: color 0.3s ease;
+}
+.mt-4 ul li a {
+    text-decoration: none;
+    font-weight: 600;
+    color: #2980b9;
+}
+.mt-4 ul li a:hover {
+    color: #9b59b6;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+    .card-grid {
+        grid-template-columns: 1fr;
+    }
+    .container {
+        padding: 1rem 1rem;
+    }
+    .links {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    .links a {
+        width: 100%;
+        text-align: center;
+    }
+}
+</style>
+
+<div class="container">
+    <h2 class="section-title">تعداد کل پست‌ها: {% total_post %}</h2>
+
+    <!-- محبوب‌ترین پست -->
     {% most_popular_posts 1 as m_p_post %}
     {% for post in m_p_post %}
-    	<p>{{ post.title }}</p>
-        <p>{{ post.description | linebreaks | truncatewords:2 }}</p>
+        <div class="popular-box" title="محبوب‌ترین پست">
+            <strong>🔥 محبوب‌ترین پست:</strong>
+            <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+            <p>{{ post.description|truncatewords:15 }}</p>
+        </div>
     {% endfor %}
 
-    <br>
-    <hr>
-    <br>
-
-   {% for post in page_obj %}
-   	    <div>
-            <a href="{{ post.get_absolute_url }}">
-                <img src="{{ post.post_images.first.img_file.url }}" alt="{{ post.post_images.first.tite }}">
-                <h1>{{ post.title }}</h1>
-                <p>{{ post.description | linebreaks | truncatewords:6 }}</p>
-{#                <p>{{ forloop.counter0 }}</p>#}
-            </a>
-            <h4>عکس پست : </h4>
-{#            <img src="{{ post.post_images.img_file.url }}" alt="{{ post.post_images.title }}">#}
+    <!-- لیست پست‌ها -->
+    <div class="card-grid" aria-label="لیست پست‌ها">
+        {% for post in page_obj %}
+        <div class="card" tabindex="0" role="article" aria-label="{{ post.title }}">
+            {% with post.post_images.first as image %}
+                {% if image and image.img_file %}
+                    <img src="{{ image.img_file.url }}" alt="{{ post.title }}">
+                {% else %}
+                    <img src="{% static 'images/default-post.jpg' %}" alt="پست بدون تصویر">
+                {% endif %}
+            {% endwith %}
+            <div class="card-body">
+                <h5>{{ post.title }}</h5>
+                <p>{{ post.description|truncatewords:15 }}</p>
+                <a href="{{ post.get_absolute_url }}" aria-label="مشاهده پست {{ post.title }}">مشاهده پست</a>
+            </div>
         </div>
-   {% endfor %}
-   <br>
-   {% include 'partials/paginations.html' with page=page_obj %} {# میتوان در تمپلیت هم متغیر ایجاد کرد و نکته اینجاست که نباید فاصله بین مساوی ها با عملوند ها باشه #}
-   <br>
-   <a href="{% url 'test01:ticket' %}">create ticket</a>
-   {% most_popular_posts 2 as pop_post %}
-   {% for post in pop_post %}
-   	    <a href="{{ post.get_absolute_url }}">
-            {{ post.title }} with : {{ post.comment_count }} comment{{ post.comment_count | pluralize }}
-        </a>
-   {% endfor %}
-    <br>
-    <br>
-    <br>
-    <hr>
-    <br>
-    <a href="{% url 'test01:create_post' %}">create post</a>
+        {% endfor %}
+    </div>
+
+    <!-- صفحه‌بندی -->
+    <div class="mt-4">
+        {% include 'partials/paginations.html' with page=page_obj %}
+    </div>
+
+    <!-- لینک‌های عملیاتی -->
+    <div class="links">
+        <a href="{% url 'test01:create_post' %}">ایجاد پست جدید</a>
+        <a href="{% url 'test01:ticket' %}">ارسال تیکت</a>
+    </div>
+
+    <!-- دیگر پست‌های محبوب -->
+    {% most_popular_posts 2 as pop_post %}
+    {% if pop_post %}
+    <div class="mt-4">
+        <h3 class="section-title">پست‌های پرکامنت</h3>
+        <ul>
+            {% for post in pop_post %}
+                <li>
+                    <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+                    ({{ post.comment_count }} دیدگاه{{ post.comment_count|pluralize:",‌ها" }})
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+</div>
 {% endblock %}

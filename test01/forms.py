@@ -48,27 +48,21 @@ class CommentForm(forms.ModelForm):
             self.add_error('letter', msg)
         return cleaned_data
 
-class CreatePostForm(forms.Form):
-    title = forms.CharField(label='عنوان', max_length=255)
-    description = forms.CharField(label='متن پست', widget=forms.Textarea(attrs={'class':'form_control'}))
-    reading_time = forms.IntegerField(label='زمان مطالعه')
-
-    def clean(self):
-        cleaned_data = super(CreatePostForm, self).clean()
-        title = cleaned_data.get('title')
-        reading_time = cleaned_data.get('reading_time')
-        if not type(reading_time) == int:
-            msg = "زمان مطالعه باید عدد باشد !"
-            self.add_error('reading_time', msg)
-        if reading_time < 0:
-            msg = "چرا زمان مطالعه رو منفی میزنی !"
-            self.add_error('reading_time', msg)
-        if len(title) < 2:
-            msg = "تعداد کاراکتر عنوان کم است !"
-            self.add_error('title', msg)
-        if len(title) > 40:
-            msg = "تعداد کاراکتر عنوان زیاد است !"
-        return cleaned_data
-
 class PostSearchForm(forms.Form):
     query = forms.CharField(label='جستجو', max_length=255)
+
+
+class CreatePostForm(forms.ModelForm):
+    image1 = forms.ImageField(label='image1', required=False)
+    image2 = forms.ImageField(label='image2', required=False)
+    class Meta:
+        model = Post
+        fields = ['title', 'description', 'reading_time']
+    def clean(self):
+        cleaned_data = super(CreatePostForm, self).clean()
+        reading_time = cleaned_data['reading_time']
+        if not type(reading_time) == int:
+            msg = "نوع زمان باید عدد باشد !"
+            self.add_error('reading_time', msg)
+        return cleaned_data
+

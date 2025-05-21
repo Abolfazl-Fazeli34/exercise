@@ -3,26 +3,37 @@
 {% block title %} post_list {% endblock %}
 {% block content %}
     {% if comment %}
-    	your comment has been sent successfully<br>
-        <a href="{{ post.get_absolute_url }}"></a>
+        <p style="color: green; font-weight: bold;">نظر شما با موفقیت ارسال شد.</p>
+        <a href="{{ post.get_absolute_url }}">بازگشت به مطلب</a>
     {% else %}
-        <form method="post" class="form">
+        <form method="post" class="form" style="max-width: 500px;">
             {% csrf_token %}
-            <input type="text" name="name" {% if form.name.value %}value="{{ form.name.value }}"{% endif %}>
-            <textarea name="letter">
-                {% if form.letter.value %}value="{{ form.letter.value }}"{% endif %}
-            </textarea>
-            <input class="form-control" type="submit" value="Submit">
+            <input
+                type="text"
+                name="name"
+                class="form-control"
+                placeholder="نام شما"
+                {% if form.name.value %}value="{{ form.name.value }}"{% endif %}
+                required
+            >
+            <textarea
+                name="letter"
+                class="form-control"
+                placeholder="متن نظر"
+                rows="5"
+                required
+            >{% if form.letter.value %}{{ form.letter.value }}{% endif %}</textarea>
+            <input class="form-control btn btn-primary mt-2" type="submit" value="ارسال نظر">
         </form>
-        <div>
-        {% if form.non_field_errors %}{{ form.non_field_errors }}{% endif %}
+        <div style="color: red; margin-top: 10px;">
+            {% if form.non_field_errors %}{{ form.non_field_errors }}{% endif %}
         </div>
-        <div class="">
+        <div style="color: red;">
             {% if form.errors %}
                 {% for field in form %}
                     {% if field.errors %}
                         {% for error in field.errors %}
-                            <p>{{ field.label }} : {{ error }}</p>
+                            <p>{{ field.label }}: {{ error }}</p>
                         {% endfor %}
                     {% endif %}
                 {% endfor %}

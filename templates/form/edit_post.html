@@ -1,0 +1,208 @@
+{% extends 'parent/base.html' %}
+{% load static %}
+{% block title %}ویرایش پست{% endblock %}
+
+{% block content %}
+<style>
+  .form-container {
+    max-width: 600px;
+    margin: 3rem auto 4rem auto;
+    background-color: #fff;
+    padding: 2rem 2.5rem;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    font-family: 'Vazirmatn', Tahoma, sans-serif;
+    color: #333;
+  }
+
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+
+  label {
+    display: block;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: #222;
+  }
+
+  input[type="text"],
+  input[type="number"],
+  textarea,
+  input[type="file"] {
+    width: 100%;
+    padding: 0.6rem 0.9rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.25s ease;
+  }
+
+  input[type="text"]:focus,
+  input[type="number"]:focus,
+  textarea:focus,
+  input[type="file"]:focus {
+    outline: none;
+    border-color: #0056d2;
+    box-shadow: 0 0 6px rgba(0, 86, 210, 0.4);
+  }
+
+  textarea {
+    resize: vertical;
+  }
+
+  .btn-submit {
+    background: linear-gradient(135deg, #007bff, #0056d2);
+    border: none;
+    padding: 0.7rem 2rem;
+    font-size: 1.1rem;
+    border-radius: 10px;
+    color: #fff;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    display: block;
+    width: 100%;
+    margin-top: 1.5rem;
+  }
+
+  .btn-submit:hover {
+    background: linear-gradient(135deg, #0056d2, #003bbd);
+  }
+
+  .form-errors {
+    color: #e74c3c;
+    margin-top: 0.4rem;
+    font-size: 0.9rem;
+    line-height: 1.3;
+  }
+
+  .post-images-wrapper {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-bottom: 2rem;
+  }
+
+  img.post-image {
+    width: 150px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    object-fit: cover;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+</style>
+
+<div class="form-container">
+  <h2 style="text-align: center; margin-bottom: 2rem;">ویرایش پست</h2>
+
+  {% if post.post_images.exists %}
+    <div class="post-images-wrapper">
+      {% for image in post.post_images.all %}
+        {% if image.img_file %}
+          <img src="{{ image.img_file.url }}" alt="تصویر مربوط به {{ post.title }}" class="post-image" loading="lazy" decoding="async" />
+        {% endif %}
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  {% if form.non_field_errors %}
+    <div class="form-errors" style="margin-bottom:1.5rem;">
+      <ul>
+        {% for error in form.non_field_errors %}
+          <li>{{ error }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+
+  <form method="post" enctype="multipart/form-data" novalidate>
+    {% csrf_token %}
+
+    <!-- عنوان -->
+    <div class="form-group">
+      <label for="id_title">عنوان:</label>
+      <input
+        type="text"
+        name="title"
+        id="id_title"
+        value="{{ request.POST.title|default:post.title }}"
+        required
+      >
+      {% if form.title.errors %}
+        <div class="form-errors">
+          {% for error in form.title.errors %}
+            <p>{{ error }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- توضیحات -->
+    <div class="form-group">
+      <label for="id_description">توضیحات:</label>
+      <textarea
+        name="description"
+        id="id_description"
+        rows="5"
+        required
+      >{{ request.POST.description|default:post.description }}</textarea>
+      {% if form.description.errors %}
+        <div class="form-errors">
+          {% for error in form.description.errors %}
+            <p>{{ error }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- زمان مطالعه -->
+    <div class="form-group">
+      <label for="id_reading_time">زمان مطالعه (دقیقه):</label>
+      <input
+        type="number"
+        name="reading_time"
+        id="id_reading_time"
+        min="1"
+        value="{{ request.POST.reading_time|default:post.reading_time }}"
+        required
+      >
+      {% if form.reading_time.errors %}
+        <div class="form-errors">
+          {% for error in form.reading_time.errors %}
+            <p>{{ error }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- تصویر اول -->
+    <div class="form-group">
+      <label for="id_image1">تصویر اول (اختیاری):</label>
+      <input type="file" name="image1" id="id_image1">
+      {% if form.image1.errors %}
+        <div class="form-errors">
+          {% for error in form.image1.errors %}
+            <p>{{ error }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- تصویر دوم -->
+    <div class="form-group">
+      <label for="id_image2">تصویر دوم (اختیاری):</label>
+      <input type="file" name="image2" id="id_image2">
+      {% if form.image2.errors %}
+        <div class="form-errors">
+          {% for error in form.image2.errors %}
+            <p>{{ error }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+
+    <button type="submit" class="btn-submit">ویرایش پست</button>
+  </form>
+</div>
+{% endblock %}

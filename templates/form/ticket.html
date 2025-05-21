@@ -1,38 +1,107 @@
 {% extends 'parent/base.html' %}
 {% load static %}
-{% block title %} post_list {% endblock %}
+{% block title %}لیست پست‌ها{% endblock %}
+
 {% block content %}
-    <form method="post" class="form">
-{#        {% csrf_token %}#}
-{#        {{ form.as_table }}#}
-{#        <input type="submit" value="Submit">#}
-        <input class="form-control" type="text" {% if form.full_name.value %} value="{{ form.full_name.value }}"{% endif %} name="fullname" placeholder="نام و نام خانوادگی ...">
-        <select name="subject">
-            <option value="گزارش">گزارش</option>
-            <option value="پیشنهاد">پیشنهاد</option>
-            <option value="انتقاد">انتقاد</option>
-        </select>
-        <textarea name="message" cols="30" rows="10">
-            {% if form.message.value %}
-            	{{ form.message.value }}
-            {% endif %}
-        </textarea>
-        <input class="form-control" type="email" name="email" {% if form.email.value %}value="{{ form.email.value }}" {% endif %} placeholder="خود را وارد کنید ..ایمیل ">
-        <input class="form-control" type="text" name="phone" {% if form.phone.value %}value="{{ form.phone.value }}" {% endif %} placeholder="راه خود را وارد کنید ..شماره هم">
-        <input class="form-control" type="submit" value="Submit">
-    </form>
-    <div>
-    {% if form.non_field_errors %}{{ form.non_field_errors }}{% endif %}
-    </div>
-    <div class="">
-        {% if form.errors %}
-            {% for field in form %}
-                {% if field.errors %}
-                	{% for error in field.errors %}
-                        <p>{{ field.label }} : {{ error }}</p>
-                	{% endfor %}
-                {% endif %} 
-            {% endfor %}
-        {% endif %}
-    </div>
+<style>
+  form.form {
+    max-width: 600px;
+    margin: 2rem auto;
+    background: #fff;
+    padding: 2rem 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    font-family: 'Vazirmatn', Tahoma, sans-serif;
+    color: #333;
+  }
+
+  input.form-control, select, textarea {
+    width: 100%;
+    padding: 0.6rem 0.9rem;
+    margin: 0.6rem 0 1.2rem 0;
+    border-radius: 8px;
+    border: 1.5px solid #ccc;
+    font-size: 1rem;
+    font-family: inherit;
+    resize: vertical;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+  }
+
+  input.form-control:focus, select:focus, textarea:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 6px rgba(0,123,255,0.5);
+  }
+
+  input[type="submit"].form-control {
+    background: linear-gradient(135deg, #007bff, #0056d2);
+    border: none;
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: background 0.3s ease;
+  }
+  input[type="submit"].form-control:hover {
+    background: linear-gradient(135deg, #0056d2, #003bbd);
+  }
+
+  .errorlist {
+    color: #e74c3c;
+    margin: 0.2rem 0 1rem 0;
+    padding-left: 1rem;
+    list-style-type: square;
+  }
+
+  .field-errors p {
+    color: #e74c3c;
+    font-size: 0.9rem;
+    margin: 0.2rem 0;
+  }
+</style>
+
+<form method="post" class="form" novalidate>
+  {% csrf_token %}
+
+  <input class="form-control" type="text" name="fullname" placeholder="نام و نام خانوادگی ..."
+    {% if form.full_name.value %} value="{{ form.full_name.value }}" {% endif %}>
+
+  <select name="subject" class="form-control">
+    <option value="گزارش" {% if form.subject.value == "گزارش" %}selected{% endif %}>گزارش</option>
+    <option value="پیشنهاد" {% if form.subject.value == "پیشنهاد" %}selected{% endif %}>پیشنهاد</option>
+    <option value="انتقاد" {% if form.subject.value == "انتقاد" %}selected{% endif %}>انتقاد</option>
+  </select>
+
+  <textarea name="message" cols="30" rows="6" placeholder="متن پیام را وارد کنید..." class="form-control">{% if form.message.value %}{{ form.message.value }}{% endif %}</textarea>
+
+  <input class="form-control" type="email" name="email" placeholder="ایمیل خود را وارد کنید..."
+    {% if form.email.value %} value="{{ form.email.value }}" {% endif %}>
+
+  <input class="form-control" type="text" name="phone" placeholder="شماره تماس خود را وارد کنید..."
+    {% if form.phone.value %} value="{{ form.phone.value }}" {% endif %}>
+
+  <input class="form-control" type="submit" value="ارسال">
+</form>
+
+<div>
+  {% if form.non_field_errors %}
+    <ul class="errorlist">
+      {% for error in form.non_field_errors %}
+        <li>{{ error }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+</div>
+
+<div class="field-errors">
+  {% if form.errors %}
+    {% for field in form %}
+      {% for error in field.errors %}
+        <p>{{ field.label }} : {{ error }}</p>
+      {% endfor %}
+    {% endfor %}
+  {% endif %}
+</div>
+
 {% endblock %}

@@ -1,4 +1,7 @@
+from cgitb import strong
 from datetime import date
+from time import sleep
+
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
@@ -40,6 +43,11 @@ class Post(models.Model):
     def save(self, *args, **kwargs):
         self.pop_slug()
         super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        storage, path = self.img_file.storage, self.img_file.path
+        storage.delete(path)
+        super().delete(*args, *kwargs)
 
     class Meta:
         ordering = ['-publish']
@@ -98,7 +106,7 @@ class Image(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='post_images')
     # img_file = ResizedImageField(upload_to='images',size=[120,120], scale=1, crop=['center', 'middle'], verbose_name='عکس')
     # img_file = ResizedImageField(upload_to=date_directory_path,size=[120,120], scale=1, crop=['center', 'middle'], verbose_name='عکس')
-    img_file = ResizedImageField(upload_to=user_directory_path, verbose_name='عکس')
+    img_file = ResizedImageField(upload_to=user_directory_path, verbose_name='عکس', blank=True, null=True)
     title = models.CharField(max_length=100, blank=True, null=True, verbose_name='عنوان')
     description = models.TextField(verbose_name='توضیحات عکس')
     created = models.DateTimeField(auto_now_add=True)

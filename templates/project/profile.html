@@ -1,0 +1,139 @@
+{% extends 'parent/base.html' %}
+{% load static %}
+
+{% block title %}پروفایل{% endblock %}
+
+{% block content %}
+<section class="profile-page">
+  <h1>پروفایل کاربری</h1>
+
+  <div class="table-container">
+    <table class="styled-table">
+      <caption>تمام پست‌ها</caption>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>عنوان</th>
+          <th>ویرایش</th>
+          <th>حذف</th>
+          <th>وضعیت</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for post in all_posts %}
+          <tr>
+            <td>{{ forloop.counter }}</td>
+            <td><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></td>
+            <td><a href="{% url 'test01:edit_post' post.id %}" style="background-color: white;border: 0;" class="action edit">ویرایش</a></td>
+            <td>
+                <form action="{% url 'test01:delete_post' post.id %}" method="post">
+                    {% csrf_token %}
+                    <input type="submit" class="action delete" value="حذف">
+                </form></td>
+            <td>{{ post.status }}</td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="5">پستی یافت نشد.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="table-container">
+    <table class="styled-table">
+      <caption>پست‌های منتشر شده</caption>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>عنوان</th>
+          <th>توضیح کوتاه</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for post in pub_posts %}
+          <tr>
+            <td>{{ forloop.counter }}</td>
+            <td><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></td>
+            <td>{{ post.description|truncatewords:10 }}</td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="3">پستی منتشر نشده است.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<style>
+  .profile-page {
+    max-width: 960px;
+    margin: 2rem auto;
+    padding: 1rem;
+    font-family: 'Vazir', sans-serif;
+  }
+
+  .profile-page h1 {
+    text-align: center;
+    color: #0d6efd;
+    margin-bottom: 2rem;
+  }
+
+  .table-container {
+    margin-bottom: 2.5rem;
+    overflow-x: auto;
+  }
+
+  .styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    box-shadow: 0 0 8px rgba(0,0,0,0.05);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .styled-table caption {
+    caption-side: top;
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding: 1rem;
+    background: #f8f9fa;
+    color: #333;
+  }
+
+  .styled-table thead {
+    background-color: #0d6efd;
+    color: white;
+  }
+
+  .styled-table th,
+  .styled-table td {
+    padding: 0.9rem 1rem;
+    text-align: center;
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  .styled-table tr:hover {
+    background-color: #f1f1f1;
+  }
+
+  .styled-table a {
+    color: #0d6efd;
+    text-decoration: none;
+  }
+
+  .styled-table .action.edit {
+    color: #198754;
+    font-weight: bold;
+  }
+
+  .styled-table .action.delete {
+    color: #dc3545;
+    font-weight: bold;
+  }
+</style>
+{% endblock %}
