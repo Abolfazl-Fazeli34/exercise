@@ -223,6 +223,13 @@ Edit
     }
 }
 </style>
+<form method="get" action="{% url 'test01:post_search' %}" style="margin-bottom: 2rem; display: flex;">
+    <input type="text" name="query" placeholder="جستجوی پست‌ها..." value="{{ request.GET.q }}"
+        style="flex: 1; padding: 0.7rem 1rem; border: 2px solid #3498db; border-radius: 12px 0 0 12px; font-size: 1rem;">
+    <button type="submit" style="background: #3498db; color: #fff; padding: 0.7rem 1.5rem; border: none; border-radius: 0 12px 12px 0; font-weight: bold;">
+        🔍
+    </button>
+</form>
 
 <div class="container">
     <h2 class="section-title">تعداد کل پست‌ها: {% total_post %}</h2>
@@ -241,6 +248,7 @@ Edit
     <div class="card-grid" aria-label="لیست پست‌ها">
         {% for post in page_obj %}
         <div class="card" tabindex="0" role="article" aria-label="{{ post.title }}">
+
             {% with post.post_images.first as image %}
                 {% if image and image.img_file %}
                     <img src="{{ image.img_file.url }}" alt="{{ post.title }}">
@@ -248,6 +256,15 @@ Edit
                     <img src="{% static 'images/default-post.jpg' %}" alt="پست بدون تصویر">
                 {% endif %}
             {% endwith %}
+            <br>
+{#            <div style="font-size: 0.85rem; color: #95a5a6; margin-bottom: 0.6rem;">#}
+{#                ✍️ {{ post.author.get_full_name }} - 🗓 {{ post.publish|date:"Y/m/d" }}#}
+{#            </div>#}
+{#            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; color: #7f8c8d;">#}
+{#                <span>👁 {{ post.views }} بازدید</span>#}
+{#                <span>💬 {{ post.comment_count }} دیدگاه</span>#}
+{#            </div>#}
+
             <div class="card-body">
                 <h5>{{ post.title }}</h5>
                 <p>{{ post.description|truncatewords:15 }}</p>
@@ -268,20 +285,34 @@ Edit
         <a href="{% url 'test01:ticket' %}">ارسال تیکت</a>
     </div>
 
-    <!-- دیگر پست‌های محبوب -->
     {% most_popular_posts 2 as pop_post %}
     {% if pop_post %}
-    <div class="mt-4">
-        <h3 class="section-title">پست‌های پرکامنت</h3>
-        <ul>
-            {% for post in pop_post %}
-                <li>
-                    <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
-                    ({{ post.comment_count }} دیدگاه{{ post.comment_count|pluralize:",‌ها" }})
+    <div class="mt-5">
+        <h3 class="section-title" style="font-size: 1.5rem; font-weight: bold; color: #2c3e50; margin-bottom: 1rem;">
+            📢 پست‌های پرکامنت
+        </h3>
+        <div class="card" style="
+            background-color: #fff;
+            border-radius: 1rem;
+            padding: 1.2rem 1.5rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            transition: 0.3s ease;
+            margin-bottom: 1.5rem;">
+            <ul style="list-style: none; padding: 0; margin: 0;">
+                {% for post in pop_post %}
+                <li style="margin-bottom: 1rem;">
+                    <a href="{{ post.get_absolute_url }}" style="color: #2980b9; text-decoration: none; font-weight: bold;">
+                        {{ post.title }}
+                    </a>
+                    <span style="font-size: 0.9rem; color: #7f8c8d;">
+                        - 💬 {{ post.comment_count }} دیدگاه{{ post.comment_count|pluralize:",‌ها" }}
+                    </span>
                 </li>
-            {% endfor %}
-        </ul>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
     {% endif %}
+
 </div>
 {% endblock %}
